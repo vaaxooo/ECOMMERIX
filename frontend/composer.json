@@ -9,9 +9,7 @@
         }
     ],
     "require": {
-        "vlucas/phpdotenv": "^5.3",
-        "bramus/router": "~1.5",
-        "twig/twig": "3.0"
+        "bramus/router": "~1.5"
     },
     "autoload": {
         "psr-4": {
