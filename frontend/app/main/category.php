@@ -1,7 +1,7 @@
 <?php require_once("app/layouts/main/top.php"); ?>
 
 
-    <div class="row mt-5 block shadow-sm">
+    <div class="row mt-5">
         <div class="col-md-4">
 
             <?php require_once ("app/layouts/main/components/products/filter-selection.php"); ?>

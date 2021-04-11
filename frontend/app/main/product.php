@@ -11,9 +11,11 @@
 
                 <div class="col-md-8 m-auto e-product-block-preview">
                     <div class="e-product-image">
-                        <img
-                            class="e-product-image-preview"
-                            id="e-product-image-preview"/>
+                        <a class="gbox" id="e-product-image-gbox">
+                            <img
+                                class="e-product-image-preview"
+                                id="e-product-image-preview"/>
+                        </a>
                     </div>
                 </div>
             </div>
@@ -50,9 +52,17 @@
                         <span class="star-description count">132</span> отзывов
                     </span>
                 </div>
+
+                <div class="d-flex e-product-block shape" id="e-product-shape"></div>
+
                 <div class="d-flex e-product-block control">
                     <div class="e-product-block price" id="e-product-price"></div>
                     <div class="e-product-block btn-buy" id="e-product-stock-label"></div>
+                    <div class="e-product-block favorite" id="e-product-favorite" title="Добавить в избранное"">
+                        <span class="material-icons">
+                            favorite_border
+                        </span>
+                    </div>
                 </div>
             </div>
         </div>

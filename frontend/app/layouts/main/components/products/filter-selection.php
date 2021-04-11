@@ -24,19 +24,21 @@
     </div>
 
     <div class="block shadow-none mt-0">
-        <div class="block-title">Сортировать по</div>
+        <div class="block-title">Сортировка</div>
         <div class="price-range">
 
             <div class="form-group">
                 <select class="form-control form-control-lg selectorSort" name="selectorSort" id="selectorSort">
-                    <option value="all">Не сортировать</option>
-                    <option value="price">Цена (по возрастанию)</option>
-                    <option value="name">Алфавит (А-я)</option>
-                    <option value="created_at">Новое</option>
+                    <option value="all">По умолчанию</option>
+                    <option value="price_ascending">По возрастающей цене</option>
+                    <option value="price_falling">По убывающей цене</option>
+                    <option value="name">По алфавиту (А-я)</option>
+                    <option value="created_at">По новизне</option>
                 </select>
             </div>
         </div>
     </div>
+
 </div>
 
 <div class="block shadow-none">
@@ -48,4 +50,10 @@
         </div>
 
     </div>
+</div>
+
+<div class="block shadow-none">
+    <a href="/">
+        <img src="//cdn.e-commerce.loc/images/banner-2.jpg" width="100%" />
+    </a>
 </div>

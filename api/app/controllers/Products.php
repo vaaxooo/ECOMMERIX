@@ -50,12 +50,14 @@ class Products extends Controller
         $sort_list = array(
             'created_at' => 'DESC',
             'name' => 'ASC',
-            'price' => 'ASC',
+            'price_ascending' => 'ASC',
+            'price_falling' => 'DESC',
         );
 
         $method = array_key_exists($sort, $sort_list) ? $sort_list[$sort] : reset($sort_list);
         $min && $min > 0 ? array_push($SQL_WHERE, "`price` >= {$min}") : NULL;
         $max && $max > 0 ? array_push($SQL_WHERE, "`price` <= {$max}") : NULL;
+        $sort = $sort == 'price_ascending' || $sort == 'price_falling' ? 'price' : $sort;
 
         $QUERY_STRING = "";
 
@@ -70,13 +72,13 @@ class Products extends Controller
         $QUERY_STRING ? $SQL .= " AND {$QUERY_STRING}" : NULL;
         $sort != "all" ? $SQL .= " ORDER BY {$sort} {$method}" : NULL;
 
-        $limit = 21; //IMPORT VALUE FROM DB `site_settings`;
-/*        SELECT * FROM `products`
-                JOIN (SELECT `id` FROM `products` WHERE `active` = 1 ORDER BY `id` LIMIT 3, 3)
-                    as p ON p.id = products.id WHERE `price` >= 300 ORDER BY `price` DESC;*/
+
+        $web = new \App\models\SiteSettings();
+        $limit = $web->get()['product_pagination'];
 
         try {
             $this->pdo->beginTransaction();
+
             $stmt = $this->pdo->prepare($SQL);
             $stmt->bindValue(':active', (int) 1, PDO::PARAM_INT);
             $stmt->bindValue(':offset', (int) (($limit * $page) - $limit), PDO::PARAM_INT);
@@ -85,12 +87,17 @@ class Products extends Controller
             $stmt->execute();
             $products = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-            $SQL = "SELECT * FROM `products` WHERE `active` = :active";
-            $stmt = $this->pdo->prepare($SQL);
-            $stmt->execute([
-                ":active" => (int)1,
-            ]);
-            $products_count = $stmt->rowCount();
+            $products_count = $this->memcache->get("products_count") ? $this->memcache->get("products_count") : NULL;
+            if(!$products_count) {
+                $SQL = "SELECT * FROM `products` WHERE `active` = :active";
+                $stmt = $this->pdo->prepare($SQL);
+                $stmt->execute([
+                    ":active" => (int)1,
+                ]);
+                $products_count = $stmt->rowCount();
+                $this->memcache->set("products_count", $products_count,MEMCACHE_COMPRESSED, 120);
+            }
+
             $this->pdo->commit();
         } catch (\Exception $exception) {
             $this->pdo->rollBack();

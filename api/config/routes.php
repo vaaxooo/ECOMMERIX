@@ -3,6 +3,11 @@
 /* API */
 
 /**
+ * Controllers\WEB.php
+ */
+$router->get('/web/getSerializeData', 'App\controllers\WEB@getSerializeData');
+
+/**
  * Controllers\Products.php
  */
 $router->post('/products/getProducts', 'App\controllers\Products@getProducts');

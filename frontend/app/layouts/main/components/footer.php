@@ -1,6 +1,6 @@
 <div class="footer d-flex w-100">
     <div class="footer-copy">
-        Copyright 2021 E-commerce. All Rights Reserved
+        Copyright 2021 <span id="web_name"></span>. All Rights Reserved
     </div>
 
     <div class="text-right" style="margin-left: auto;">

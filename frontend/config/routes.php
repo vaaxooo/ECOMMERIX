@@ -41,7 +41,7 @@ $router->get('/product/(.*)', function($product) {
 
 $router->get('/(.*)', function($action) {
 
-    $file_path = 'app/'.$action.'.php';
+    $file_path = 'app/main/'.$action.'.php';
     if(file_exists($file_path))
     {
         require_once($file_path);
