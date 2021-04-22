@@ -1,21 +1,22 @@
-<?php require_once("app/layouts/main/top.php"); ?>
+<?php require_once ("app/layouts/top.php"); ?>
 
+    <div class="row mt-5 mb-5">
 
-    <div class="row mt-5">
-        <div class="col-md-4">
-
-            <?php require_once ("app/layouts/main/components/products/filter-selection.php"); ?>
-
+        <div class="col-md-3">
+            <?php require_once ("app/layouts/components/products/filter.php"); ?>
         </div>
 
-        <div class="col-md-8 mb-5">
-            <div class="row" id="products-list"></div>
-            <?php require_once ("app/layouts/main/components/products/pagination.php"); ?>
+        <div class="col-md-9">
+
+            <?php require_once ("app/layouts/components/products/sorting.php"); ?>
+
+            <div class="card-product-list" id="products-list"></div>
+
+            <div id="products-pagination"></div>
+
         </div>
 
     </div>
 
-<script>
-    ECMR.load(<?php if(isset($category)): echo "'{$category}'"; endif; ?>);
-</script>
-<?php require_once("app/layouts/main/bottom.php"); ?>
+
+<?php require_once ("app/layouts/bottom.php"); ?>

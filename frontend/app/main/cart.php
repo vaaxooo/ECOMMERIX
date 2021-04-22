@@ -1,12 +1,11 @@
-<?php require_once("app/layouts/main/top.php"); ?>
+<?php require_once("app/layouts/top.php"); ?>
 
-    <div class="row mt-5 block shadow-none">
-        <div class="block-title">Корзина</div>
-        <div class="col-md-12" id="e-products-from-cart"></div>
+
+    <header class="section-heading heading-line mt-5">
+        <h4 class="title-section text-uppercase">Корзина</h4>
+    </header>
+
+    <div class="row" id="e-cart-products">
     </div>
 
-
-    <script>
-        ECMR.getProductsFromCart();
-    </script>
-<?php require_once("app/layouts/main/bottom.php"); ?>
+<?php require_once("app/layouts/bottom.php"); ?>

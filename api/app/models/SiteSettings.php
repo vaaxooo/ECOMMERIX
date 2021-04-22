@@ -7,6 +7,10 @@ use PDO;
 
 class SiteSettings extends Controller {
 
+
+    /**
+     * @return array|false|mixed|string
+     */
     public function get()
     {
         try {
@@ -19,7 +23,7 @@ class SiteSettings extends Controller {
                 $stmt->execute();
                 $site_settings = $stmt->fetch(PDO::FETCH_ASSOC);
                 $this->pdo->commit();
-                $this->memcache->set("site_settings", $site_settings,MEMCACHE_COMPRESSED, time() + 120);
+                $this->memcache->set("site_settings", $site_settings,MEMCACHE_COMPRESSED, time() + 1800);
             }
 
             return $site_settings;

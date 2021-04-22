@@ -24,4 +24,9 @@ $router->get('/categories/getCategories', 'App\controllers\Categories@getCategor
  */
 $router->get('/adverts/getBannerAdverts', 'App\controllers\Adverts@getBannerAdverts');
 
+/**
+ * Controllers\Coupons.php
+ */
+$router->post('/coupons/checkCoupon', 'App\controllers\Coupons@checkCoupon');
+
 ?>

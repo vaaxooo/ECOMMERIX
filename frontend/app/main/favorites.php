@@ -1,13 +1,11 @@
-<?php require_once("app/layouts/main/top.php"); ?>
-
-    <div class="row mt-5 block shadow-none">
-        <div class="block-title">Избранное</div>
-        <div class="col-md-12" id="e-favorite-products"></div>
-
-    </div>
+<?php require_once ("app/layouts/top.php"); ?>
 
 
-<script>
-    ECMR.getFavoriteProducts();
-</script>
-<?php require_once("app/layouts/main/bottom.php"); ?>
+    <header class="section-heading heading-line mt-5">
+        <h4 class="title-section text-uppercase">Избранное</h4>
+    </header>
+
+
+    <div class="row" id="e-favorite-products"></div>
+
+<?php require_once ("app/layouts/bottom.php"); ?>

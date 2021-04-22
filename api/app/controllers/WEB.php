@@ -25,7 +25,7 @@ class WEB extends Controller
                 $stmt->bindValue(":active", (int) 1, PDO::PARAM_INT);
                 $stmt->execute();
                 $currencies = $stmt->fetchAll(PDO::FETCH_ASSOC);
-                $this->memcache->set("currencies", $currencies);
+                $this->memcache->set("currencies", $currencies,MEMCACHE_COMPRESSED, time() + 1800);
             }
 
             $languages = $this->memcache->get("languages") ? $this->memcache->get("languages") : NULL;
@@ -36,7 +36,7 @@ class WEB extends Controller
                 $stmt->bindValue(":active", (int)1, PDO::PARAM_INT);
                 $stmt->execute();
                 $languages = $stmt->fetchAll(PDO::FETCH_ASSOC);
-                $this->memcache->set("languages", $languages);
+                $this->memcache->set("languages", $languages,MEMCACHE_COMPRESSED, time() + 1800);
             }
 
             $this->pdo->commit();
