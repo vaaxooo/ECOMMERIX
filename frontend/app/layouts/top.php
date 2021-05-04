@@ -29,3 +29,5 @@
 
 
 <div class="container mt-5 mb-5">
+
+    <?php require_once ("components/tpl/breadcumb.php"); ?>

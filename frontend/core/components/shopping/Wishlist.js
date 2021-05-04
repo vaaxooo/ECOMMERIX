@@ -1,16 +1,16 @@
-export default function Favorites(product) {
+export default function Wishlist(product) {
     let image = product.image ? product.image : '//e-commerce.loc/public/assets/images/no-image.png';
-    let url_redirect = "/product/" + product.name.replace(/ /g, "-").toLocaleLowerCase() + "-" + product.id.replace(/ /g, "");
+    let url_redirect = "/p/" + product.name.replace(/ /g, "-").toLocaleLowerCase() + "-" + product.id.replace(/ /g, "");
 
     let label_1 = product.label_1 ? `<span class="badge badge-success"> ${product.label_1} </span>` : ``;
-    let free_shipping = +product.free_shipping === 1 ? `<p class="small text-success vc-freeshipping"> Бесплатная доставка </p>` : ``;
+    let free_shipping = +product.free_shipping === 1 ? `<p class="small text-success vc-freeshipping" data-translate="free_shipping"></p>` : ``;
 
 
     let button;
     if(+product.stock === 0) {
-        button = `<button class="btn  btn-light btn-sm disabled"> Нет в наличии <i class="fa fa-shopping-cart"></i></button>`;
+        button = `<button class="btn  btn-light btn-sm disabled" data-translate="not_available"> <i class="fa fa-shopping-cart"></i></button>`;
     } else {
-        button = `<button class="btn btn-sm btn-light" onclick="quickProduct(${product.id})">Добавить в корзину <i class="fa fa-shopping-cart"></i></button>`;
+        button = `<button class="btn btn-sm btn-light" onclick="quickProduct(${product.id})" data-translate="add_to_cart"> <i class="fa fa-shopping-cart"></i></button>`;
     }
 
     let element = `<div class="col-md-3">

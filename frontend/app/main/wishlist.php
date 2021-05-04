@@ -2,10 +2,10 @@
 
 
     <header class="section-heading heading-line mt-5">
-        <h4 class="title-section text-uppercase">Избранное</h4>
+        <h4 class="title-section text-uppercase" data-translate="wishlist"></h4>
     </header>
 
 
-    <div class="row" id="e-favorite-products"></div>
+    <div class="row" id="e-wishlist-products"></div>
 
 <?php require_once ("app/layouts/bottom.php"); ?>

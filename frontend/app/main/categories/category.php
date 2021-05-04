@@ -12,7 +12,7 @@
 
             <div class="card-product-list" id="products-list"></div>
 
-            <div id="products-pagination"></div>
+            <div class="mt-3" id="products-pagination"></div>
 
         </div>
 

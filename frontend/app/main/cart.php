@@ -2,7 +2,7 @@
 
 
     <header class="section-heading heading-line mt-5">
-        <h4 class="title-section text-uppercase">Корзина</h4>
+        <h4 class="title-section text-uppercase" data-translate="cart"></h4>
     </header>
 
     <div class="row" id="e-cart-products">

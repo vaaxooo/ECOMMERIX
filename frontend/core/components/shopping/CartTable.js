@@ -3,9 +3,9 @@ export default function CartTable(table) {
                 <table class="card card-body table table-borderless table-shopping-cart">
                     <thead class="text-muted">
                     <tr class="small text-uppercase e-cart-head-table">
-                        <th scope="col" width="250">Товар</th>
-                        <th scope="col" width="120">Количество</th>
-                        <th scope="col" width="120">Цена</th>
+                        <th scope="col" width="250" data-translate="product"></th>
+                        <th scope="col" width="120" data-translate="quantity"></th>
+                        <th scope="col" width="120" data-translate="price"></th>
                         <th scope="col" class="text-right" width="200"></th>
                     </tr>
                     </thead>
@@ -15,8 +15,7 @@ export default function CartTable(table) {
                 </table>
 
                 <div class="card card-body border-top">
-                    <p class="icontext"><i class="icon text-success fa fa-truck"></i> Бесплатная доставка в течении 1-2
-                        недель</p>
+                    <p class="icontext"><i class="icon text-success fa fa-truck"></i>  <span data-translate="shipping_notification"></span></p>
                 </div>
              </aside>`;
     return element;

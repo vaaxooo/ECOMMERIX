@@ -6,6 +6,9 @@ import emptyList from "../../components/products/emptyList.js";
 import Product from "../../components/products/Product.js";
 import emptyProduct from "../../components/products/emptyProduct.js";
 
+/* FILTERS */
+import Buttons from "../../components/filters/Buttons.js";
+import Checkbox from "../../components/filters/Checkbox.js";
 
 export default class Products {
 
@@ -14,6 +17,7 @@ export default class Products {
     * */
     static getProducts(category = null) {
         const productsList = document.getElementById("products-list");
+        const homepageNewproducts = document.getElementById("homepage-newproducts");
         const products_grid_view = localStorage.getItem("products_grid_view");
 
         if(productsList){
@@ -26,6 +30,7 @@ export default class Products {
 
                 productsList.innerHTML = "";
                 const products = response.products;
+                const filters = response.filters;
 
                 EINIT.init.products = products;
 
@@ -45,14 +50,17 @@ export default class Products {
                             element += verticalProduct(product);
                         }
                     }
+
                 } else {
-                    element += emptyList();
+                    EINIT.getCurrentUrl()[0] ? element += emptyList() : homepageNewproducts ? homepageNewproducts.classList.add("hidden") : null;
                 }
+
+                this.generateFilters(filters);
 
                 productsList.innerHTML = productsList.innerHTML + element;
 
                 if(!EINIT.getCurrentUrl()[0]) {
-                    $(".slick-slider").slick({
+                    $(".homepage-slider-products").slick({
                         accessibility: true,
                         infinite: true,
                         edgeFriction: 0.10,
@@ -96,6 +104,32 @@ export default class Products {
     * */
 
 
+    /**
+     * GENERATE FILTERS
+     * @param filters
+     */
+    static generateFilters(filters) {
+        const filtersBlock = document.getElementById("filters-block");
+
+        if(filtersBlock) {
+            filtersBlock.innerHTML = "";
+
+            let elementBlock = "";
+            if(filters){
+                for(let index in filters){
+                    let filter = filters[index];
+                    if(filter.type === "checkbox") {
+                        elementBlock += Checkbox(filter);
+                    }
+                    else if(filter.type === "buttons") {
+                        elementBlock += Buttons(filter);
+                    }
+                }
+            }
+
+            filtersBlock.innerHTML = elementBlock;
+        }
+    }
 
     /*
     * GENERATE PAGINATION BLOCK

@@ -3,7 +3,7 @@ addDefaultCharset utf-8
 RewriteEngine on
 RewriteBase /
 
-Header add Access-Control-Allow-Origin "*"
+Header set Access-Control-Allow-Origin "*"
 Header add Access-Control-Allow-Headers "origin, x-requested-with, content-type, etag"
 Header add Access-Control-Allow-Methods "PUT, GET, POST, DELETE, OPTIONS"
 

@@ -3,11 +3,11 @@ export default function QuickProductComponent(product) {
     let image = product.image ? product.image : '//e-commerce.loc/public/assets/images/no-image.png';
     let label_1 = product.label_1 ? `<span class="badge badge-success px-2 mt-5 ml-5"> ${product.label_1} </span>` : ``;
 
-    let free_shipping = +product.free_shipping === 1 ? `<p class="small text-success"> Бесплатная доставка </p>` : ``;
-    let favorite_product = !checkFavoriteProduct(product.id)
+    let free_shipping = +product.free_shipping === 1 ? `<p class="small text-success" data-translate="free_shipping"> </p>` : ``;
+    let wishlist_product = !checkWishlistProduct(product.id)
 
-        ? `<button class="btn btn-light" title="Добавить в избранное" onclick="favoriteProduct(${product.id}, 'productInfo')"><i class="fas fa-heart"></i></button>`
-        : `<button class="btn btn-outline-danger" title="Удалить из избранного" onclick="favoriteProduct(${product.id}, 'productInfo')"><i class="fas fa-heart"></i></button>`;
+        ? `<button class="btn btn-light" title="${EINIT.translate.add_to_wishlist}" onclick="wishlistProduct(${product.id}, 'productInfo')"><i class="fas fa-heart"></i></button>`
+        : `<button class="btn btn-outline-danger" title="${EINIT.translate.remove_from_wishlist}" onclick="wishlistProduct(${product.id}, 'productInfo')"><i class="fas fa-heart"></i></button>`;
 
     let gallery = ``;
     if (product.gallery) {
@@ -23,10 +23,10 @@ export default function QuickProductComponent(product) {
 
 
     let button = +product.stock === 0
-        ? `<a href="#" class="btn  btn-primary disabled"> Нет в наличии </a>`
-        : `<a href="#" class="btn btn-primary"> Купить сейчас <i class="fa fa-shopping-cart"></i></a>`;
+        ? `<a href="#" class="btn  btn-primary disabled" data-translate="not_available"></a>`
+        : `<a href="#" class="btn btn-primary" data-translate="buy_now"> <i class="fa fa-shopping-cart"></i></a>`;
 
-    let button_2 = `<button class="btn btn-light" title="Добавить в корзину" onclick="cartProduct(${product.id}, 'productInfo')"><i class="fa fa-plus"></i></button>`;
+    let button_2 = `<button class="btn btn-light" title="${EINIT.translate.add_to_cart}" onclick="cartProduct(${product.id}, 'productInfo')"><i class="fa fa-plus"></i></button>`;
 
     /*
     * PRODUCT ATTRIBUTES
@@ -94,13 +94,13 @@ export default function QuickProductComponent(product) {
                                     <img src="//e-commerce.loc/public/assets/images/icons/starts-disable.svg" alt="">
                                 </li>
                             </ul>
-                            <small class="label-rating text-muted">0 reviews</small>
-                            <small class="label-rating text-success"> <i class="fa fa-clipboard-check"></i> 0 orders </small>
+                            <small class="label-rating text-muted">0 <span data-translate="reviews"></span></small>
+                            <small class="label-rating text-success"> <i class="fa fa-clipboard-check"></i> 0 <span data-translate="orders"></span> </small>
                         </div> <!-- rating-wrap.// -->
 
                         <div class="mb-3 pc-right">
                             <var class="price h4">₴ ${product.price}</var>
-                            <span class="text-muted">/шт.</span>
+                            <span class="text-muted">/${EINIT.translate.piece}</span>
                             ${free_shipping}
                         </div>
                         
@@ -113,7 +113,7 @@ export default function QuickProductComponent(product) {
                         </div>
                         <div class="row mt-3 align-items-center">
                             <div class="col-md-4">
-                                ${favorite_product}
+                                ${wishlist_product}
                                 <a href="#" class="btn  btn-light"> <i class="fa fa-folder-plus"></i>  </a>
                             </div>
                             <div class="col-md-8 text-right">

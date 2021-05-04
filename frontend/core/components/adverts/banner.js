@@ -5,7 +5,7 @@ export default function Banner (advert, index) {
                         <div class="bg-faded-info rounded-3 py-4">
                             <div class="row align-items-center">
                                 <div class="col-md-5">
-                                    <div class="px-4 pe-sm-0 ps-sm-5 mb-5"><span class="badge bg-primary text-white text-uppercase">Ограниченное предложение</span>
+                                    <div class="px-4 pe-sm-0 ps-sm-5 mb-5"><span class="badge bg-primary text-white text-uppercase" data-translate="limited_supply"></span>
                                         <h2 class="mt-5">${advert.title}</h2>
                                         <p class="h5 text-body fw-light">${advert.description}</p>
                                         <a class="btn btn-primary mt-5" href="${advert.url_redirect}">${advert.url_name} <i class="ci-arrow-right fs-ms ms-1"></i></a>

@@ -9,7 +9,7 @@ const category_list = [];
 export default class Categories {
 
     static getCategories () {
-        xhrRequest("GET", "/categories/getCategories")
+        xhrRequest("POST", "/categories/getCategories")
             .then(response => {
 
                 let categories = [];
@@ -23,13 +23,28 @@ export default class Categories {
 
     static generateCardCategories(categories) {
         const categories_cart = document.getElementById("categories-card");
+        const homepageCategoriesCard = document.getElementById("homepage-categories");
         if(categories_cart) {
             let element = ``;
             for(let i = 0; i < 5; i++) {
                 element += cardCategories(categories[i], i);
             }
             categories_cart.innerHTML = categories_cart.innerHTML + element;
+        } else {
+            homepageCategoriesCard ? homepageCategoriesCard.classList.add("hidden") : null;
         }
+
+        if(!EINIT.getCurrentUrl()[0]) {
+            $(".homepage-slider-categories").slick({
+                accessibility: true,
+                infinite: true,
+                edgeFriction: 0.10,
+                mobileFirst: true,
+                slidesToShow: 3,
+                slidesToScroll: 1
+            });
+        }
+
     };
 
     static generateFilterCategories(categories) {

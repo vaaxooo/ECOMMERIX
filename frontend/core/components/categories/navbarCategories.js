@@ -1,6 +1,6 @@
 export default function navbarCategories(category, index) {
     if (category.name) {
-        let url_name = "/category/" + category.name
+        let url_name = "/c/" + category.name
                             .replace(/[^a-zа-яё0-9\s]/gi, ' ')
                             .replace(/ {1,}/g, '-')
                             .toLocaleLowerCase()
@@ -31,7 +31,7 @@ export default function navbarCategories(category, index) {
             return element;
         } else if(index === +EINIT.site.visible_navbar_categories) {
             let more_element = `<div class="dropdown">
-                                <button class="nav-category dropdown-toggle" type="button" id="category-drop-more" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Ещё..</button>
+                                <button class="nav-category dropdown-toggle" type="button" id="category-drop-more" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">${EINIT.translate.more}</button>
                                 <div class="dropdown-menu multi-level" role="menu" aria-labelledby="category-drop-more" id="navbar-more-categories">`;
             more_element += element;
             more_element += `</div>
@@ -48,7 +48,7 @@ export default function navbarCategories(category, index) {
 
 function dropdownItem(category) {
 
-    let url_name = "/category/" + category.name
+    let url_name = "/c/" + category.name
                         .replace(/[^a-zа-яё0-9\s]/gi, ' ')
                         .replace(/ {1,}/g, '-')
                         .toLocaleLowerCase()

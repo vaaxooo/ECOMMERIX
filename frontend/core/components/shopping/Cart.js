@@ -1,15 +1,15 @@
 export default function Cart (product) {
     let image = product.image ? product.image : '//e-commerce.loc/public/assets/images/no-image.png';
-    let url_redirect = "/product/" + product.name.replace(/ /g, "-").toLocaleLowerCase() + "-" + product.id.replace(/ /g, "");
+    let url_redirect = "/p/" + product.name.replace(/ /g, "-").toLocaleLowerCase() + "-" + product.id.replace(/ /g, "");
 
     let label_1 = product.label_1 ? `<span class="badge badge-success"> ${product.label_1} </span>` : ``;
-    let free_shipping = +product.free_shipping === 1 ? `<small class="text-success"> Бесплатная доставка </small>` : ``;
+    let free_shipping = +product.free_shipping === 1 ? `<small class="text-success" data-translate="free_shipping"></small>` : ``;
 
 
-    let favorite_product = !checkFavoriteProduct(product.id)
+    let wishlist_product = !checkWishlistProduct(product.id)
 
-        ? `<button class="btn btn-light" title="Добавить в избранное" onclick="favoriteProduct(${product.id}, 'cart')"><i class="fas fa-heart"></i></button>`
-        : `<button class="btn btn-outline-danger" title="Удалить из избранного" onclick="favoriteProduct(${product.id}, 'cart')"><i class="fas fa-heart"></i></button>`;
+        ? `<button class="btn btn-light" title="${EINIT.translate.add_to_wishlist}" onclick="wishlistProduct(${product.id}, 'cart')"><i class="fas fa-heart"></i></button>`
+        : `<button class="btn btn-outline-danger" title="${EINIT.translate.remove_from_wishlist}" onclick="wishlistProduct(${product.id}, 'cart')"><i class="fas fa-heart"></i></button>`;
 
     let attributes = ``;
     if(product.selectedAttributes) {
@@ -17,6 +17,10 @@ export default function Cart (product) {
             attributes += `<span class="text-muted small"><b>${attribute.name}:</b> ${attribute.option}</span> `;
         }
     }
+
+    let products_list = EINIT.init.products.filter(item => +item.id === +product.id);
+    let products_count = 0;
+    products_list.filter(item => products_count = +products_count + +item.count);
 
     let element = `<tr>
                         <td>
@@ -40,7 +44,7 @@ export default function Cart (product) {
                                 </div>
                                 <input type="text" class="form-control bg-light" value="${product.count}" disabled>
                                 <div class="input-group-append">
-                                    <button class="btn btn-light ${ +product.count === +product.stock ? 'disabled' : '' }" type="button" id="button-plus" onclick="changeProductCount('${product.cart_id}', 'increment')"><i
+                                    <button class="btn btn-light ${ +product.count === +product.stock || +products_count === +product.stock ? 'disabled' : '' }" type="button" id="button-plus" onclick="changeProductCount('${product.cart_id}', 'increment')"><i
                                                 class="fa fa-plus"></i></button>
                                 </div>
                             </div>
@@ -51,8 +55,8 @@ export default function Cart (product) {
                             </div>
                         </td>
                         <td class="text-right">
-                            ${favorite_product}
-                            <button class="btn btn-light btn-round" onclick="removeFCProducts('${product.cart_id}', 'cart')"> Удалить </button>
+                            ${wishlist_product}
+                            <button class="btn btn-light btn-round" onclick="removeFCProducts('${product.cart_id}', 'cart')" data-translate="delete"></button>
                         </td>
                     </tr>`;
     return element;

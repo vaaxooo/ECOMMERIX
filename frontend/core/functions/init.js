@@ -13,12 +13,15 @@ const EINIT = {};
     self.init = {
         categories: {},
         products: {},
-        adverts: {}
+        adverts: {},
+        articles: {}
     };
 
     self.site = {
         visible_navbar_categories: 7
     }
+
+    self.translate = {}
 
     /*
     * CONTROL URL INPUT

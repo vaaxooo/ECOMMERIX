@@ -2,7 +2,7 @@ export default function horizontalProduct (product) {
 
     let image = product.image ? product.image : '//e-commerce.loc/public/assets/images/no-image.png';
 
-    let url_redirect = "/product/" + product.name
+    let url_redirect = "/p/" + product.name
                                         .replace(/[^a-zа-яё0-9\s]/gi, '-')
                                         .replace(/ /g, "-")
                                         .toLocaleLowerCase()
@@ -11,14 +11,14 @@ export default function horizontalProduct (product) {
     let label_1 = product.label_1 ? `<span class="badge badge-success"> ${product.label_1} </span>` : ``;
 
     let button = +product.stock === 0
-                    ? `<button class="btn  btn-primary btn-block disabled"> Нет в наличии <i class="fa fa-shopping-cart"></i></button>`
-                    : `<button class="btn btn-primary btn-block" onclick="quickProduct(${product.id})"> Купить <i class="fa fa-shopping-cart"></i> </button>`;
+                    ? `<button class="btn  btn-primary btn-block disabled" data-translate="not_available"> <i class="fa fa-shopping-cart"></i></button>`
+                    : `<button class="btn btn-primary btn-block" onclick="quickProduct(${product.id})"> ${EINIT.translate.buy} <i class="fa fa-shopping-cart"></i> </button>`;
 
-    let free_shipping = +product.free_shipping === 1 ? `<p class="small text-success"> Бесплатная доставка </p>` : ``;
+    let free_shipping = +product.free_shipping === 1 ? `<p class="small text-success"> ${EINIT.translate.free_shipping} </p>` : ``;
 
-    let favorite_product = !checkFavoriteProduct(product.id)
-                    ? `<span class="small favorite-product" onclick="favoriteProduct(${product.id})"><i class="fa fa-heart"></i> Добавить в избранное</span>`
-                    : `<span class="small favorite-product text-danger" onclick="favoriteProduct(${product.id})"><i class="fa fa-heart"></i> Удалить из избранного</span>`;
+    let wishlist_product = !checkWishlistProduct(product.id)
+                    ? `<span class="small wishlist-product" onclick="wishlistProduct(${product.id})"><i class="fa fa-heart"></i> <span data-translate="add_to_wishlist"></span></span>`
+                    : `<span class="small wishlist-product text-danger" onclick="wishlistProduct(${product.id})"><i class="fa fa-heart"></i> <span data-translate="remove_from_wishlist"></span>`;
 
     let discount = `<span class="badge badge-primary percent"> -20% </span>`;
 
@@ -36,7 +36,7 @@ export default function horizontalProduct (product) {
                                 <img src="${image}" loading="lazy" class="image-zoom-preview-bl">
                             </a>
                         </aside> <!-- col.// -->
-                        <article class="col-sm-6">
+                        <article class="col-sm-6 py-4">
                             <a href="${url_redirect}" class="title mt-2 h5" title="${product.name}">${product.name.trunc(60)}</a>
                             <div class="rating-wrap mb-3">
                                 <ul class="rating-stars">
@@ -47,15 +47,15 @@ export default function horizontalProduct (product) {
                                         <img src="//e-commerce.loc/public/assets/images/icons/starts-disable.svg" alt="">
                                     </li>
                                 </ul>
-                                <small class="label-rating text-muted">0 reviews</small>
+                                <small class="label-rating text-muted">0 ${EINIT.translate.reviews}</small>
                                 <small class="label-rating text-success">
-                                    <i class="fa fa-clipboard-check"></i> 0 orders </small>
+                                    <i class="fa fa-clipboard-check"></i> 0 ${EINIT.translate.orders} </small>
                             </div>
                             
                             <p title="${product.short_description}">${product.short_description.trunc(255)}</p>
 
                         </article> <!-- col.// -->
-                        <aside class="col-sm-3 info-aside">
+                        <aside class="col-sm-3 py-4">
                             <div class="price-wrap mt-2">
                                 <span class="price h5"> ₴ ${product.price} </span>
                                 <del class="price-old"> ₴ ${product.price}</del>
@@ -66,10 +66,10 @@ export default function horizontalProduct (product) {
                             <br>
                             <p>
                                 ${button}
-                                <a href="${url_redirect}" class="btn btn-light btn-block mt-2"> Подробнее  </a>
+                                <a href="${url_redirect}" class="btn btn-light btn-block mt-2" data-translate="readmore"></a>
                             </p>
                             <br>
-                            ${favorite_product}
+                            ${wishlist_product}
                         </aside>
                     </div>
                 </div>

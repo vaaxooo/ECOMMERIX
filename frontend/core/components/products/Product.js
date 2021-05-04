@@ -3,11 +3,11 @@ export default function Product(product) {
     let image = product.image ? product.image : '//e-commerce.loc/public/assets/images/no-image.png';
     let label_1 = product.label_1 ? `<span class="badge badge-success px-2 mt-5 ml-5"> ${product.label_1} </span>` : ``;
 
-    let free_shipping = +product.free_shipping === 1 ? `<p class="small text-success"> Бесплатная доставка </p>` : ``;
-    let favorite_product = !checkFavoriteProduct(product.id)
+    let free_shipping = +product.free_shipping === 1 ? `<p class="small text-success" data-translate="free_shipping"></p>` : ``;
+    let wishlist_product = !checkWishlistProduct(product.id)
 
-        ? `<button class="btn btn-light" title="Добавить в избранное" onclick="favoriteProduct(${product.id}, 'productInfo')"><i class="fas fa-heart"></i></button>`
-        : `<button class="btn btn-outline-danger" title="Удалить из избранного" onclick="favoriteProduct(${product.id}, 'productInfo')"><i class="fas fa-heart"></i></button>`;
+        ? `<button class="btn btn-light" title="${EINIT.translate.add_to_wishlist}" onclick="wishlistProduct(${product.id}, 'productInfo')"><i class="fas fa-heart"></i></button>`
+        : `<button class="btn btn-outline-danger" title="${EINIT.translate.remove_from_wishlist}" onclick="wishlistProduct(${product.id}, 'productInfo')"><i class="fas fa-heart"></i></button>`;
 
     let gallery = ``;
     if (product.gallery !== "" && product.gallery !== null) {
@@ -23,28 +23,28 @@ export default function Product(product) {
 
 
     let button = +product.stock === 0
-        ? `<a href="#" class="btn  btn-primary disabled"> Нет в наличии <i class="fa fa-shopping-cart"></i></a>`
-        : `<a href="#" class="btn btn-primary"> Купить сейчас <i class="fa fa-shopping-cart"></i></a>`;
+        ? `<a href="#" class="btn  btn-primary disabled" data-translate="not_available"> <i class="fa fa-shopping-cart"></i></a>`
+        : `<a href="#" class="btn btn-primary" data-translate="buy_now"> <i class="fa fa-shopping-cart"></i></a>`;
 
     let button_2 = +product.stock > 0
-        ? `<button class="btn btn-light" title="Добавить в корзину" onclick="cartProduct(${product.id}, 'productInfo')"><i class="fa fa-plus"></i></button>`
+        ? `<button class="btn btn-light" title="${EINIT.translate.add_to_cart}" onclick="cartProduct(${product.id}, 'productInfo')"><i class="fa fa-plus"></i></button>`
         : ``;
 
     /*
     * PRODUCT ATTRIBUTES
     * */
     let attributes = ``;
-    if(product.attributes) {
+    if (product.attributes) {
 
-        if(typeof product.attributes === "string") {
+        if (typeof product.attributes === "string") {
             product.attributes = JSON.parse(product.attributes);
         }
 
-        for(let attribute of product.attributes) {
+        for (let attribute of product.attributes) {
             let attribute_name = attribute.name;
             let attribute_options = attribute.options;
             let options = ``;
-            for(let option of attribute_options) {
+            for (let option of attribute_options) {
                 options += `<label class="btn btn-light" data-attribute-name="${attribute_name}" data-attribute-option="${option}" onclick="selectProductAttribute(${product.id})">
                                 <input type="radio" name="radio_size"> ${option}
                             </label>`;
@@ -96,13 +96,13 @@ export default function Product(product) {
                                     <img src="//e-commerce.loc/public/assets/images/icons/starts-disable.svg" alt="">
                                 </li>
                             </ul>
-                            <small class="label-rating text-muted">0 reviews</small>
-                            <small class="label-rating text-success"> <i class="fa fa-clipboard-check"></i> 0 orders </small>
+                            <small class="label-rating text-muted">0 <span data-translate="reviews"></span></small>
+                            <small class="label-rating text-success"> <i class="fa fa-clipboard-check"></i> 0 <span data-translate="orders"></span> </small>
                         </div> <!-- rating-wrap.// -->
 
                         <div class="mb-3 pc-right">
                             <var class="price h4">₴ ${product.price}</var>
-                            <span class="text-muted">/шт.</span>
+                            <span class="text-muted">/<span data-translate="piece"></span></span>
                             ${free_shipping}
                         </div>
                         
@@ -115,7 +115,7 @@ export default function Product(product) {
                         </div>
                         <div class="row mt-3 align-items-center">
                             <div class="col-md-4">
-                                ${favorite_product}
+                                ${wishlist_product}
                                 <a href="#" class="btn  btn-light"> <i class="fa fa-folder-plus"></i>  </a>
                             </div>
                             <div class="col-md-8 text-right">
@@ -129,7 +129,7 @@ export default function Product(product) {
         </div>
 
         <div class="col-12 card card-body mt-3">
-            <h5 class="card-title">Описание</h5>
+            <h5 class="card-title" data-translate="description"></h5>
             <p class="mt-2">${product.description}</p>
         </div>`;
     return element;

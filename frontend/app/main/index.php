@@ -1,8 +1,7 @@
-<?php require_once ("app/layouts/top.php"); ?>
+<?php require_once("app/layouts/top.php"); ?>
 
-
-
-    <div class="card card-body mt-4 mb-5 mb-grid-gutter slider-home-banner carousel slide" data-ride="carousel" id="slider-items">
+    <div class="card card-body mt-4 mb-5 mb-grid-gutter slider-home-banner carousel slide" data-ride="carousel"
+         id="slider-items">
         <a class="carousel-control-prev" href="#slider-items" role="button" data-slide="prev">
             <span class="carousel-control-prev-icon" aria-hidden="true"></span>
             <span class="sr-only">Previous</span>
@@ -14,73 +13,38 @@
     </div>
 
 
-    <header class="section-heading heading-line mt-5 mb-2">
-        <h4 class="title-section text-uppercase">Новинки</h4>
-    </header>
+    <div id="homepage-newproducts">
+        <header class="section-heading heading-line mt-5 mb-2">
+            <h4 class="title-section text-uppercase" data-translate="newproducts"></h4>
+            <a href="/products/newproducts" class="title-link" rel="nofollow" data-translate="all_newproducts"></a>
+        </header>
 
-    <div class="slick-slider slick-vertical row" id="products-list">
+        <div class="slick-slider slick-horizontal homepage-slider-products row" id="products-list">
+        </div>
     </div>
 
+    <div id="homepage-categories">
+        <header class="section-heading heading-line mt-5 mb-2">
+            <h4 class="title-section text-uppercase" data-translate="popular_categories"></h4>
+        </header>
 
-    <header class="section-heading heading-line mt-5 mb-2">
-        <h4 class="title-section text-uppercase">Популярные категории</h4>
-    </header>
-
-    <div class="categories-card row" id="categories-card"></div>
+        <div class="slick-slider slick-horizontal homepage-slider-categories row" id="categories-card"></div>
+    </div>
 
     <article class="mt-5 mb-5">
         <img src="https://bootstrap-ecommerce.com/templates/alistyle-html/images/banners/ad-sm.png" class="w-100">
     </article>
 
 
-
-
-    <div class="padding-bottom">
+    <div class="padding-bottom" id="homepage-articles">
 
         <header class="section-heading heading-line">
-            <h4 class="title-section text-uppercase">Статьи</h4>
+            <h4 class="title-section text-uppercase" data-translate="new_articles"></h4>
         </header>
 
-        <div class="row">
-            <div class="col-md-3 col-sm-6 mt-2">
-                <article class="card card-post">
-                    <img src="https://bootstrap-ecommerce.com/templates/alistyle-html/images/posts/1.jpg" class="card-img-top">
-                    <div class="card-body">
-                        <h6 class="title">Trade Assurance</h6>
-                        <p class="small text-uppercase text-muted">Order protection</p>
-                    </div>
-                </article> <!-- card.// -->
-            </div> <!-- col.// -->
-            <div class="col-md-3 col-sm-6 mt-2">
-                <article class="card card-post">
-                    <img src="https://bootstrap-ecommerce.com/templates/alistyle-html/images/posts/2.jpg" class="card-img-top">
-                    <div class="card-body">
-                        <h6 class="title">Pay anytime</h6>
-                        <p class="small text-uppercase text-muted">Finance solution</p>
-                    </div>
-                </article> <!-- card.// -->
-            </div> <!-- col.// -->
-            <div class="col-md-3 col-sm-6 mt-2">
-                <article class="card card-post">
-                    <img src="https://bootstrap-ecommerce.com/templates/alistyle-html/images/posts/3.jpg" class="card-img-top">
-                    <div class="card-body">
-                        <h6 class="title">Inspection solution</h6>
-                        <p class="small text-uppercase text-muted">Easy Inspection</p>
-                    </div>
-                </article> <!-- card.// -->
-            </div> <!-- col.// -->
-            <div class="col-md-3 col-sm-6 mt-2">
-                <article class="card card-post">
-                    <img src="https://bootstrap-ecommerce.com/templates/alistyle-html/images/posts/4.jpg" class="card-img-top">
-                    <div class="card-body">
-                        <h6 class="title">Ocean and Air Shipping</h6>
-                        <p class="small text-uppercase text-muted">Logistic services</p>
-                    </div>
-                </article> <!-- card.// -->
-            </div> <!-- col.// -->
-        </div> <!-- row.// -->
+        <div class="row" id="articles-list"></div>
 
     </div>
 
 
-<?php require_once ("app/layouts/bottom.php"); ?>
+<?php require_once("app/layouts/bottom.php"); ?>

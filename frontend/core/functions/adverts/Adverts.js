@@ -6,7 +6,7 @@ export default class Adverts {
     static Banner () {
         const blockBanner = document.getElementById("slider-items");
         if(blockBanner) {
-            xhrRequest("GET", "/adverts/getBannerAdverts")
+            xhrRequest("POST", "/adverts/getBannerAdverts")
                 .then(response => {
 
                     let element = `<div class="carousel-inner">`;

@@ -1,10 +1,15 @@
+/* FUNCTIONS */
 import Products from "./products/Products.js";
+import Routes from "../Routes.js";
+
+/* COMPONENTS */
+import Wishlist from "../components/shopping/Wishlist.js";
 import emptyFC from "../components/shopping/emptyFC.js";
-import Favorites from "../components/shopping/Favorites.js";
 import Cart from "../components/shopping/Cart.js";
 import CartTable from "../components/shopping/CartTable.js";
 import CartCheckout from "../components/shopping/CartCheckout.js";
 import Toast from "../components/blocks/Toast.js";
+
 
 window.addEventListener("load", function () {
 
@@ -31,50 +36,52 @@ window.addEventListener("load", function () {
 
 
     /**
-     * HEADER FAVORITES AND CART COUNT
+     * HEADER WISHLIST AND CART COUNT
      */
-    let fp_count = JSON.parse(localStorage.getItem("favorite_products")) ? JSON.parse(localStorage.getItem("favorite_products")).length : 0;
-    document.getElementById("header-favorites-count").innerHTML = fp_count;
+    let fp_count = JSON.parse(localStorage.getItem("wishlist_products")) ? JSON.parse(localStorage.getItem("wishlist_products")).length : 0;
+    document.getElementById("header-wishlist-count").innerHTML = fp_count;
 
     let cp_count = JSON.parse(localStorage.getItem("cart_products")) ? JSON.parse(localStorage.getItem("cart_products")).length : 0;
     document.getElementById("header-cart-count").innerHTML = cp_count;
     /* END */
 
     /**
-     * GET CART OR FAVORITES PRODUCT LIST
+     * GET CART OR WISHLIST PRODUCT LIST
      * @param type
      * @returns {boolean}
      */
-    window.getFCProducts = function getFCProducts(type = "favorites") {
-        const elementBlock = type === "favorites"
-            ? document.getElementById("e-favorite-products")
+    window.getFCProducts = function getFCProducts(type = "wishlist") {
+        const elementBlock = type === "wishlist"
+            ? document.getElementById("e-wishlist-products")
             : document.getElementById("e-cart-products");
         elementBlock.innerHTML = "";
 
-        let lcProducts = type === "favorites"
-            ? JSON.parse(localStorage.getItem("favorite_products"))
-            : JSON.parse(localStorage.getItem("cart_products"));
+        if (elementBlock) {
+            let lcProducts = type === "wishlist"
+                ? JSON.parse(localStorage.getItem("wishlist_products"))
+                : JSON.parse(localStorage.getItem("cart_products"));
 
-        let element = ``;
-        if (lcProducts.length > 0) {
-            EINIT.init.products = lcProducts;
-            for (let product of lcProducts) {
-                element += type === "favorites" ? Favorites(product) : Cart(product);
-            }
-            if (type === "cart") {
-                elementBlock.innerHTML = elementBlock.innerHTML + CartTable(element);
-                const e_shopping_cart_product_price = elementBlock.querySelectorAll("#e-shopping-cart-product-price");
-                let amount = 0;
-                for (let priceElement of e_shopping_cart_product_price) {
-                    amount = +amount + +priceElement.innerHTML;
+            let element = ``;
+            if (lcProducts && lcProducts.length > 0) {
+                EINIT.init.products = lcProducts;
+                for (let product of lcProducts) {
+                    element += type === "wishlist" ? Wishlist(product) : Cart(product);
                 }
-                elementBlock.innerHTML = elementBlock.innerHTML + CartCheckout(amount);
-            } else {
-                elementBlock.innerHTML = elementBlock.innerHTML + element
+                if (type === "cart") {
+                    elementBlock.innerHTML = elementBlock.innerHTML + CartTable(element);
+                    const e_shopping_cart_product_price = elementBlock.querySelectorAll("#e-shopping-cart-product-price");
+                    let amount = 0;
+                    for (let priceElement of e_shopping_cart_product_price) {
+                        amount = +amount + +priceElement.innerHTML;
+                    }
+                    elementBlock.innerHTML = elementBlock.innerHTML + CartCheckout(amount);
+                } else {
+                    elementBlock.innerHTML = elementBlock.innerHTML + element
+                }
+                return false;
             }
-            return false;
-        }
 
+        }
         elementBlock.innerHTML = elementBlock.innerHTML + emptyFC(type);
         return false;
     }
@@ -103,12 +110,12 @@ window.addEventListener("load", function () {
      * @param product_id
      * @returns {boolean}
      */
-    window.checkFavoriteProduct = function checkFavoriteProduct(product_id) {
-        let favorite_products = JSON.parse(localStorage.getItem("favorite_products"));
+    window.checkWishlistProduct = function checkWishlistProduct(product_id) {
+        let wishlist_products = JSON.parse(localStorage.getItem("wishlist_products"));
 
-        if (favorite_products) {
-            for (let i = 0; i < favorite_products.length; i++) {
-                if (+favorite_products[i].id === +product_id) {
+        if (wishlist_products) {
+            for (let i = 0; i < wishlist_products.length; i++) {
+                if (+wishlist_products[i].id === +product_id) {
                     return true;
                 }
             }
@@ -118,31 +125,31 @@ window.addEventListener("load", function () {
     };
 
     /**
-     * REMOVE PRODUCT FROM CART OR FAVORITES LIST
+     * REMOVE PRODUCT FROM CART OR WISHLIST LIST
      * @param product
      * @param type
      * @returns {boolean}
      */
-     window.removeFCProducts = function removeFCProducts(product, type = "favorites") {
-        const elementBlock = type === "favorites"
-            ? document.getElementById("header-favorites-count")
+    window.removeFCProducts = function removeFCProducts(product, type = "wishlist") {
+        const elementBlock = type === "wishlist"
+            ? document.getElementById("header-wishlist-count")
             : document.getElementById("header-cart-count");
-        if(elementBlock) {
-            let lcProducts = type === "favorites"
-                ? JSON.parse(localStorage.getItem("favorite_products"))
+        if (elementBlock) {
+            let lcProducts = type === "wishlist"
+                ? JSON.parse(localStorage.getItem("wishlist_products"))
                 : JSON.parse(localStorage.getItem("cart_products"));
 
 
             if (lcProducts.length > 0) {
                 for (let i = 0; i < lcProducts.length; i++) {
-                    if(type === "favorites") {
+                    if (type === "wishlist") {
                         if (+lcProducts[i].id === +product) {
                             lcProducts = lcProducts.filter(item => +item.id !== +product)
-                            localStorage.setItem("favorite_products", JSON.stringify(lcProducts));
+                            localStorage.setItem("wishlist_products", JSON.stringify(lcProducts));
 
                             elementBlock.innerHTML = +elementBlock.innerHTML - 1;
                         }
-                    }else{
+                    } else {
                         if (lcProducts[i].cart_id === product) {
                             lcProducts = lcProducts.filter(item => item.cart_id !== product)
                             localStorage.setItem("cart_products", JSON.stringify(lcProducts));
@@ -158,77 +165,20 @@ window.addEventListener("load", function () {
         return false;
     }
 
-     /*
-     * END
-     * */
+    /*
+    * END
+    * */
 
 
     /*
     *  TRIGGER CATEGORY CHANGE
     * */
-    var url = EINIT.getCurrentUrl();
-    var url_path = url[0] === "category" ? url[1] : null;
-
-    url[0] === "category" ? EINIT.params.selectCategory = url_path : null;
-    url[0] === "product" ? Products.getProduct(url[1]) : null;
-    url[0] === "favorites" || url[0] === "cart" ? getFCProducts(url[0]) : null;
-
+    Routes();
     Products.getProducts(EINIT.params.selectCategory);
     /*
     * END
     *  */
 
-    /*
-    * TRIGGER PRODUCTS FILTER CHANGE
-    * */
-    let selectorSort = document.getElementById('selectorSort');
-    if (selectorSort) {
-
-        selectorSort.onchange = function () {
-            EINIT.changeParams("sort", document.getElementById('selectorSort').value);
-            Products.getProducts(EINIT.params.selectCategory);
-        }
-    }
-
-    let product_amount_from = document.getElementById('product_amount_from');
-    if (product_amount_from) {
-        product_amount_from.value = EINIT.getUrlParam("min") ? EINIT.getUrlParam("min") : "";
-        product_amount_from.onchange = function () {
-            EINIT.changeParams("min", document.getElementById('product_amount_from').value);
-            Products.getProducts(EINIT.params.selectCategory);
-        };
-    }
-
-    let product_amount_to = document.getElementById('product_amount_to');
-    if (product_amount_to) {
-        product_amount_to.value = EINIT.getUrlParam("max") ? EINIT.getUrlParam("max") : "";
-        product_amount_to.onchange = function () {
-            EINIT.changeParams("max", document.getElementById('product_amount_to').value);
-            Products.getProducts(EINIT.params.selectCategory);
-        };
-    }
-
-    let product_range_price = document.getElementById('product-range-price');
-    if (product_range_price) {
-        product_range_price.value = product_amount_from.value;
-        product_range_price.onchange = function () {
-            product_amount_from.value = product_range_price.value;
-            product_amount_to.value = 999999;
-            EINIT.changeParams("min", document.getElementById('product_amount_from').value);
-            EINIT.changeParams("max", document.getElementById('product_amount_to').value);
-            Products.getProducts(EINIT.params.selectCategory);
-        };
-    }
-
-    if (selectorSort) {
-        selectorSort = selectorSort.getElementsByTagName('option');
-        for (let isort of selectorSort) {
-            if (isort.value === EINIT.getUrlParam("sort")) isort.selected = true;
-        }
-    }
-    /*
-    * END FILTER
-    * */
 
     /*
     * TRIGGER FILTER CATEGORIES
@@ -306,31 +256,31 @@ window.addEventListener("load", function () {
      * @param type
      * @returns {boolean}
      */
-    window.favoriteProduct = function favoriteProduct(product_id, type = null) {
-        const favorites_count = document.getElementById("header-favorites-count");
+    window.wishlistProduct = function wishlistProduct(product_id, type = null) {
+        const wishlist_count = document.getElementById("header-wishlist-count");
         let inpTarget = event.currentTarget;
-        let favorite_products = JSON.parse(localStorage.getItem("favorite_products"));
+        let wishlist_products = JSON.parse(localStorage.getItem("wishlist_products"));
         type = type ? type : localStorage.getItem("products_grid_view");
 
         let product = EINIT.init.products.filter(item => +item.id === +product_id)[0];
 
         if (product) {
-            if (favorite_products) {
+            if (wishlist_products) {
 
-                for (let i = 0; i < favorite_products.length; i++) {
-                    if (+favorite_products[i].id === +product.id) {
-                        favorite_products = favorite_products.filter(item => +item.id !== +product.id)
-                        localStorage.setItem("favorite_products", JSON.stringify(favorite_products));
+                for (let i = 0; i < wishlist_products.length; i++) {
+                    if (+wishlist_products[i].id === +product.id) {
+                        wishlist_products = wishlist_products.filter(item => +item.id !== +product.id)
+                        localStorage.setItem("wishlist_products", JSON.stringify(wishlist_products));
                         inpTarget.classList.remove("text-danger");
 
                         if (type === "productInfo") {
                             inpTarget.classList.remove("btn-outline-danger");
                             inpTarget.classList.add("btn-light");
-                            inpTarget.setAttribute("title", "Добавить в избранное");
+                            inpTarget.setAttribute("title", EINIT.translate.add_to_wishlist);
                         }
 
-                        type === "horizontal" ? inpTarget.innerHTML = `<i class="fa fa-heart"></i> Добавить в избранное` : null;
-                        favorites_count.innerHTML = +favorites_count.innerHTML - 1;
+                        type === "horizontal" ? inpTarget.innerHTML = `<i class="fa fa-heart"></i> <span>${EINIT.translate.add_to_wishlist}</span>` : null;
+                        wishlist_count.innerHTML = +wishlist_count.innerHTML - 1;
 
                         type === "cart" ? getFCProducts("cart") : null;
 
@@ -338,16 +288,16 @@ window.addEventListener("load", function () {
                     }
                 }
 
-                if (favorite_products[0] === "[]") {
-                    localStorage.removeItem("favorite_products");
+                if (wishlist_products[0] === "[]") {
+                    localStorage.removeItem("wishlist_products");
                     return false;
                 }
 
                 let temp_products = {};
-                temp_products = favorite_products.concat(product);
+                temp_products = wishlist_products.concat(product);
 
-                favorites_count.innerHTML = +favorites_count.innerHTML + 1;
-                localStorage.setItem("favorite_products", JSON.stringify(temp_products));
+                wishlist_count.innerHTML = +wishlist_count.innerHTML + 1;
+                localStorage.setItem("wishlist_products", JSON.stringify(temp_products));
 
                 inpTarget.classList.add("text-danger");
 
@@ -355,25 +305,25 @@ window.addEventListener("load", function () {
                     inpTarget.classList.add("btn-outline-danger");
                     inpTarget.classList.remove("text-danger");
                     inpTarget.classList.remove("btn-light");
-                    inpTarget.setAttribute("title", "Удалить из избранного");
+                    inpTarget.setAttribute("title", EINIT.translate.remove_from_wishlist);
                 }
 
                 type === "cart" ? getFCProducts("cart") : null;
-                type === "horizontal" ? inpTarget.innerHTML = `<i class="fa fa-heart"></i> Удалить из избранного` : null;
+                type === "horizontal" ? inpTarget.innerHTML = `<i class="fa fa-heart"></i> <span>${EINIT.translate.remove_from_wishlist}</span>` : null;
             } else {
-                localStorage.setItem("favorite_products", JSON.stringify([product]));
+                localStorage.setItem("wishlist_products", JSON.stringify([product]));
                 inpTarget.classList.add("text-danger");
 
                 if (type === "productInfo") {
                     inpTarget.classList.add("btn-outline-danger");
                     inpTarget.classList.remove("text-danger");
                     inpTarget.classList.remove("btn-light");
-                    inpTarget.setAttribute("title", "Удалить из избранного");
+                    inpTarget.setAttribute("title", EINIT.translate.remove_from_wishlist);
                 }
 
-                favorites_count.innerHTML = +favorites_count.innerHTML + 1;
+                wishlist_count.innerHTML = +wishlist_count.innerHTML + 1;
                 type === "cart" ? getFCProducts("cart") : null;
-                type === "horizontal" ? inpTarget.innerHTML = `<i class="fa fa-heart"></i> Удалить из избранного` : null;
+                type === "horizontal" ? inpTarget.innerHTML = `<i class="fa fa-heart"></i> <span>${EINIT.translate.remove_from_wishlist}</span>` : null;
             }
 
         }
@@ -395,7 +345,7 @@ window.addEventListener("load", function () {
 
         let product = EINIT.init.products.filter(item => +item.id === +product_id)[0];
 
-        if(!product.selectedAttributes){
+        if (!product.selectedAttributes) {
             product.selectedAttributes = [];
         }
 
@@ -404,10 +354,16 @@ window.addEventListener("load", function () {
             if (type === "productInfo") {
                 if (product.attributes) {
                     if (product.attributes.length !== product.selectedAttributes.length) {
-                        Toast("Упс..", "Не выбраны атрибуты товара!");
+                        Toast(EINIT.translate.oops, EINIT.translate.not_selected_attributes);
                         return false;
                     }
                 }
+            }
+
+            let products_count = 0;
+            if (cart_products) {
+                let products_list = cart_products.filter(item => +item.id === +product.id);
+                products_list ? products_list.filter(item => products_count = +products_count + +item.count) : null;
             }
 
             product.count = 1;
@@ -416,22 +372,26 @@ window.addEventListener("load", function () {
             date = date.getHours() + date.getMinutes() + date.getSeconds() + date.getDay() + date.getMonth() + date.getFullYear();
             product.cart_id = product_id + "_" + date;
 
-            if (cart_products) {
+            if (+products_count < +product.stock) {
+                if (cart_products) {
 
-                let temp_products = {};
-                temp_products = cart_products.concat(product);
+                    let temp_products = {};
+                    temp_products = cart_products.concat(product);
 
-                cart_count.innerHTML = +cart_count.innerHTML + 1;
-                localStorage.setItem("cart_products", JSON.stringify(temp_products));
-                Toast("Уведомление!", "Товар добавлен в корзину!");
+                    cart_count.innerHTML = +cart_count.innerHTML + 1;
+                    localStorage.setItem("cart_products", JSON.stringify(temp_products));
+                    Toast(EINIT.translate.notification, EINIT.translate.products_added_to_cart);
+                } else {
+                    localStorage.setItem("cart_products", JSON.stringify([product]));
+                    cart_count.innerHTML = +cart_count.innerHTML + 1;
+                    Toast(EINIT.translate.notification, EINIT.translate.products_added_to_cart);
+                }
+
+                resetProductAttributes();
+                product.selectedAttributes = [];
             } else {
-                localStorage.setItem("cart_products", JSON.stringify([product]));
-                cart_count.innerHTML = +cart_count.innerHTML + 1;
-                Toast("Уведомление!", "Товар добавлен в корзину!");
+                Toast(EINIT.translate.notification, EINIT.translate.cant_add_product);
             }
-
-            resetProductAttributes();
-            product.selectedAttributes = [];
 
         }
         return false;
@@ -456,7 +416,7 @@ window.addEventListener("load", function () {
                 cart_products = cart_products.filter(item => +item.id !== product_id)
                 localStorage.setItem("cart_products", JSON.stringify(cart_products));
                 inpTarget.setAttribute("onclick", `cartProduct(${product_id}, '${type}')`);
-                inpTarget.setAttribute("title", "Добавить в корзину");
+                inpTarget.setAttribute("title", EINIT.translate.add_to_cart);
                 type === "horizontal"
                     ? inpTarget.innerHTML = `Добавить в корзину <i class="fa fa-shopping-cart"></i>`
                     : inpTarget.innerHTML = `<i class="fa fa-shopping-cart">`;
@@ -485,11 +445,18 @@ window.addEventListener("load", function () {
         cart_products = JSON.parse(cart_products);
 
         if (cart_products.length > 0) {
+
+
             for (let i = 0; i < cart_products.length; i++) {
                 if (cart_products[i].cart_id === product) {
                     let prod = cart_products[i];
+
+                    let products_list = cart_products.filter(item => +item.id === +prod.id);
+                    let products_count = 0;
+                    products_list ? products_list.filter(item => products_count = +products_count + +item.count) : null;
+
                     if (method === "increment") {
-                        if (prod.count < prod.stock) {
+                        if (prod.count < prod.stock && products_count < prod.stock) {
                             prod.count = prod.count + 1;
                         }
                     } else {
@@ -518,8 +485,6 @@ window.addEventListener("load", function () {
         modal.innerHTML = `<div class="modal fade show" tabindex="-1" style="display: block;" aria-modal="true" role="dialog">
                               <div class="modal-dialog modal-dialog-centered">
                                 <div class="modal-content">
-<!--                                    <div class="modal-header justify-content-end border-0">
-                                    </div>-->
                                     
                                   <div class="modal-body">
                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" onclick="closeModal()"></button>
@@ -539,7 +504,17 @@ window.addEventListener("load", function () {
         modal.innerHTML = "";
     }
 
+
 });
 
+
+
+
+
+/* FILTERS */
+import "./filters/Filters.js";
+
+/* HOOKS */
 import './coupons/hooks.js';
 import './products/hooks.js';
+import './web/hooks.js';
