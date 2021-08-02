@@ -1,1 +1,0 @@
-<div class="row mt-5 px-4" id="products-pagination"></div>

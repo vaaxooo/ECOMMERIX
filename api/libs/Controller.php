@@ -4,17 +4,22 @@
 namespace App\libs;
 
 use App\libs\DB;
+use App\libs\MCache;
 
-class Controller extends DB
+class Controller
 {
     protected $pdo;
     protected $memcache;
 
+    protected $language;
+
     public function __construct()
     {
-        $dbObject = new DB();
-        $this->pdo = $dbObject->connect();
-        $this->memcache = $dbObject->connectMemcache();
+        $dbClass = new DB();
+        $this->pdo = $dbClass->connect();
+        $this->memcache = new MCache();
+        $languageClass = new Language();
+        $this->language = (object) $languageClass->connect();
     }
 
 }

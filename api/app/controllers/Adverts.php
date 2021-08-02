@@ -4,6 +4,7 @@
 namespace App\controllers;
 
 use App\libs\Controller;
+use App\models\DBModel;
 use PDO;
 
 class Adverts extends Controller
@@ -11,23 +12,16 @@ class Adverts extends Controller
 
     public function getBannerAdverts()
     {
+        $adverts = $this->memcache->cache("banners");
 
-        try {
-            $adverts = $this->memcache->get("banners") ? $this->memcache->get("banners") : NULL;
-            if(!$adverts) {
-                $this->pdo->beginTransaction();
-                $SQL = "SELECT * FROM `adverts` WHERE `banner` = :banner AND `active` = :active";
-                $stmt = $this->pdo->prepare($SQL);
-                $stmt->bindValue(":banner", (int)1, PDO::PARAM_INT);
-                $stmt->bindValue(":active", (int)1, PDO::PARAM_INT);
-                $stmt->execute();
-                $adverts = $stmt->fetchAll(PDO::FETCH_ASSOC);
-                $this->pdo->commit();
-                $this->memcache->set("banners", $adverts,MEMCACHE_COMPRESSED, time() + 120);
-            }
+        if (!$adverts) {
 
-        } catch (\Exception $exception) {
-            $this->pdo->rollBack();
+            $SQL = "SELECT * FROM `adverts` WHERE `banner` = :banner AND `active` = :active";
+            $adverts = DBModel::Query($SQL, "all", [
+                ["key" => ":banner", "value" => (int)1, "param" => PDO::PARAM_INT],
+                ["key" => ":active", "value" => (int)1, "param" => PDO::PARAM_INT],
+            ]);
+            $this->memcache->cache("banners", $adverts, "set", 120);
         }
 
         exit(json_encode(["adverts" => $adverts, "ok" => true]));
